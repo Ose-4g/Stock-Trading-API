@@ -1,5 +1,5 @@
 {
-  "name": "image-repository",
+  "name": "trove-challenge",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -19,17 +19,9 @@
       "prettier --write"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Ose-4g/image-repository.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Ose-4g/image-repository/issues"
-  },
-  "homepage": "https://github.com/Ose-4g/image-repository#readme",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/chai": "^4.2.21",
