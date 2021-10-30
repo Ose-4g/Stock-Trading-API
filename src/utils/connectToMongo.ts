@@ -1,11 +1,15 @@
 import mongoose from 'mongoose';
 import env from '../env.config';
-import logger from '../utils/logger';
-const { MONGO_URL } = env;
+import logger from './logger';
+import constants from '../utils/constants';
+
+const { TEST } = constants.environments;
+const { MONGO_URL, MONGO_URL_TEST } = env;
 
 export default async (): Promise<void> => {
   try {
-    await mongoose.connect(MONGO_URL, {
+    const url = process.env.NODE_ENV === TEST ? MONGO_URL_TEST : MONGO_URL;
+    await mongoose.connect(url, {
       useNewUrlParser: true,
       useCreateIndex: true,
       useFindAndModify: false,

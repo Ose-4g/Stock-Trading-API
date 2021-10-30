@@ -7,6 +7,7 @@ const constants = {
   environments: {
     PRODUCTION: 'production',
     DEVELOPMENT: 'development',
+    TEST: 'test',
   },
   test: {
     TEST_USER: {

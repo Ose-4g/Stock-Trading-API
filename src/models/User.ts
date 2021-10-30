@@ -1,6 +1,6 @@
 import { Schema, model, Model, Document } from 'mongoose';
 import validator from 'validator';
-import constants from '../../utils/constants';
+import constants from '../utils/constants';
 import bcrypt from 'bcryptjs';
 
 const { USER } = constants.mongooseModels;
