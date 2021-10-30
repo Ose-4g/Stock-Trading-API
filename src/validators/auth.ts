@@ -13,6 +13,10 @@ const signUpSchema = Joi.object({
     'any.required': 'Last name is required',
     'string.min': 'Last name must be at least 3 characters',
   }),
+  phoneNumber: Joi.string().required().messages({
+    'any.required': 'First name is required',
+  }),
+
   password: Joi.string().min(8).required().messages({
     'any.required': 'Password is required',
     'string.min': 'Password must be at least 8 characters',

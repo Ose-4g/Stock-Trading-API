@@ -2,6 +2,7 @@ import { Schema, model, Model, Document } from 'mongoose';
 import validator from 'validator';
 import constants from '../utils/constants';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 const { USER } = constants.mongooseModels;
 
@@ -9,8 +10,13 @@ export interface User extends Document {
   firstName: string;
   lastName: string;
   email: string;
+  phoneNumber: string;
   password: string;
   passwordConfirm: string | null;
+  passwordResetToken: string | null;
+  passwordResetExpires: Date | null;
+  balance: number;
+  createPasswordResetToken(): string;
 }
 
 const userSchema = new Schema<User>(
@@ -29,7 +35,9 @@ const userSchema = new Schema<User>(
       validate: [validator.isEmail, 'Email is invalid'],
       unique: ['true', 'User with this email already exists'],
     },
-
+    phoneNumber: {
+      type: String,
+    },
     password: {
       type: String,
       required: [true, 'Please provide a password'],
@@ -40,6 +48,16 @@ const userSchema = new Schema<User>(
       type: String,
       required: [true, 'Please confirm your password'],
       select: false,
+    },
+    passwordResetToken: {
+      type: String,
+    },
+    passwordResetExpires: {
+      type: String,
+    },
+    balance: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }
@@ -57,6 +75,17 @@ userSchema.pre('save', async function (next) {
   this.passwordConfirm = null;
   next();
 });
+
+//generate a random token. send it to user, hash it then store in database.
+userSchema.methods.createPasswordResetToken = function (): string {
+  const token = crypto.randomBytes(16).toString('hex');
+
+  this.passwordResetToken = crypto.createHash('sha256').update(token).digest('hex');
+
+  this.passwordResetExpires = new Date(Date.now() + 1 * 60 * 60 * 1000);
+
+  return token;
+};
 
 const UserModel: Model<User> = model<User>(USER, userSchema);
 

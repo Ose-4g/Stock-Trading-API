@@ -4,7 +4,7 @@ import UserModel, { User } from '../../models/User';
 import successResponse from '../../middleware/response';
 
 const signUp: RequestHandler = async (req, res, next) => {
-  const { firstName, lastName, email, password, passwordConfirm } = req.body;
+  const { firstName, lastName, email, password, phoneNumber, passwordConfirm } = req.body;
 
   // check that the email is not in use
   const prevUsers: User[] = await UserModel.find({ email });
@@ -19,6 +19,7 @@ const signUp: RequestHandler = async (req, res, next) => {
     lastName,
     email,
     password,
+    phoneNumber,
     passwordConfirm,
   });
 
