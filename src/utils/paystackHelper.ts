@@ -32,7 +32,7 @@ const initializeTransaction = async (user: User, amount: number, type: string) =
         },
       }
     );
-    const { authorization_url } = data;
+    const { authorization_url } = data.data;
     //create a new transaction
     const transaction = await TransactionModel.create({
       user: user._id,

@@ -25,6 +25,7 @@ const handleEvent = async (event: string, body: any) => {
     }
 
     transaction!.status = SUCCESS;
+    transaction!.authorization_url = null;
     const type = transaction?.type;
 
     logger.info('finding the user who made the transaction');
