@@ -5,6 +5,9 @@ import successResponse from '../../middleware/response';
 import bcrypt from 'bcryptjs';
 import { generateAccessToken } from '../../utils/token';
 import validator from 'validator';
+import env from '../../env.config';
+
+const { JWT_COOKIE_EXPIRES_IN } = env;
 
 const login: RequestHandler = async (req, res, next) => {
   const { email, password } = req.body;
@@ -38,7 +41,17 @@ const login: RequestHandler = async (req, res, next) => {
   // generate accessToken and send in request
   const accessToken = generateAccessToken(String(user._id));
 
+  //send the token in a cookie as well
+  res.cookie('accessToken', accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV == 'production',
+    expires: new Date(Date.now() + parseInt(JWT_COOKIE_EXPIRES_IN) * 60 * 60 * 1000),
+  });
+
   return successResponse(res, 200, 'User Logged in sucessfully', {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email,
     accessToken,
   });
 };

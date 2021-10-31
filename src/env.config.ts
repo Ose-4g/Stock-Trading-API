@@ -11,6 +11,7 @@ interface Env {
   NODEMAILER_USER: string;
   NODEMAILER_PASSWORD: string;
   EMAIL_FROM: string;
+  JWT_COOKIE_EXPIRES_IN: string;
 }
 
 export default {
@@ -23,4 +24,5 @@ export default {
   NODEMAILER_USER: process.env.NODEMAILER_USER,
   NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
   EMAIL_FROM: process.env.EMAIL_FROM,
+  JWT_COOKIE_EXPIRES_IN: process.env.JWT_COOKIE_EXPIRES_IN,
 } as Env;
