@@ -2,19 +2,9 @@ import env from '../env.config';
 import nodemailer from 'nodemailer';
 import logger from './logger';
 
-const { NODEMAILER_USER, NODEMAILER_PASSWORD } = env;
+const { NODEMAILER_USER, NODEMAILER_PASSWORD, EMAIL_FROM } = env;
 
-const sendMail = async ({
-  from,
-  to,
-  subject,
-  html,
-}: {
-  from: string;
-  to: string;
-  subject: string;
-  html: string;
-}): Promise<void> => {
+const sendMail = async ({ to, subject, html }: { to: string; subject: string; html: string }): Promise<void> => {
   try {
     //CREATE TRANSPORTER USING CORRECT CREDENTIALS
     const transporter = nodemailer.createTransport({
@@ -33,7 +23,7 @@ const sendMail = async ({
     //SEND THE EMAIL
 
     await transporter.sendMail({
-      from,
+      from: EMAIL_FROM,
       to,
       subject,
       html,

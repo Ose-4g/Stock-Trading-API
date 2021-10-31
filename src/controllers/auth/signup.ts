@@ -3,9 +3,6 @@ import AppError from '../../errors/AppError';
 import UserModel, { User } from '../../models/User';
 import successResponse from '../../middleware/response';
 import sendMail from '../../utils/sendMail';
-import env from '../../env.config';
-
-const { EMAIL_FROM } = env;
 
 const signUp: RequestHandler = async (req, res, next) => {
   const { firstName, lastName, email, password, phoneNumber, passwordConfirm } = req.body;
@@ -29,7 +26,6 @@ const signUp: RequestHandler = async (req, res, next) => {
 
   //send welcome  email
   await sendMail({
-    from: EMAIL_FROM,
     to: user.email,
     subject: 'Welcome to Trove',
     html: `
