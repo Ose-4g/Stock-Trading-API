@@ -27,7 +27,6 @@ const transactionSchema: Schema = new Schema(
     },
     reference: {
       type: String,
-      required: [true, 'Transaction reference is required'],
     },
     amount: {
       type: Number,

@@ -22,7 +22,7 @@ const initializeTransaction = async (user: User, amount: number, type: string) =
       'https://api.paystack.co/transaction/initialize',
       {
         email: user.email,
-        amount: 20000,
+        amount: amount * 100,
         reference,
       },
       {

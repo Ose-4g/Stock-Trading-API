@@ -38,9 +38,9 @@ const handleEvent = async (event: string, body: any) => {
 
     logger.info("updating the user'rs account accordingly");
     if (type == DEPOSIT) {
-      user.deposit += amount;
+      user.deposit += amount / 100;
     } else if (type == WITHDRAWAL) {
-      user.deposit -= amount;
+      user.deposit -= amount / 100;
     }
 
     await user.save();

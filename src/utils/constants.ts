@@ -2,6 +2,7 @@ const constants = {
   mongooseModels: {
     USER: 'User',
     TRANSACTION: 'Transaction',
+    SHARE: 'Share',
   },
   environments: {
     PRODUCTION: 'production',
