@@ -58,7 +58,7 @@ const userSchema = new Schema<User>(
       type: String,
     },
     passwordResetExpires: {
-      type: String,
+      type: Date,
     },
     verificationCode: {
       type: String,

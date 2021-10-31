@@ -2,6 +2,11 @@ import { RequestHandler } from 'express';
 import AppError from '../../errors/AppError';
 import UserModel, { User } from '../../models/User';
 import logger from '../../utils/logger';
+import sendMail from '../../utils/sendMail';
+import env from '../../env.config';
+import successResponse from '../../middleware/response';
+
+const { CLIENT_URL } = env;
 
 const forgotPassword: RequestHandler = async (req, res, next) => {
   const { email } = req.body;
@@ -19,9 +24,22 @@ const forgotPassword: RequestHandler = async (req, res, next) => {
     const token = user.createPasswordResetToken();
     await user.save();
 
-    await sendMail({});
+    await sendMail({
+      to: email,
+      subject: 'Reset your password',
+      html: `
+        Hi ${user.firstName},<br>
+        Please use the link below to reset your password<br><br>
+
+        ${CLIENT_URL}/reset-password/${token}
+        `,
+    });
+
+    return successResponse(res, 200, 'Successfully sent reset password email', null);
   } catch (error) {
     logger.error('An error occured in forogt password');
     next(error);
   }
 };
+
+export default forgotPassword;
