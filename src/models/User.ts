@@ -15,8 +15,13 @@ export interface User extends Document {
   passwordConfirm: string | null;
   passwordResetToken: string | null;
   passwordResetExpires: Date | null;
-  balance: number;
+  verificationCode: string | null;
+  verificationCodeExpires: Date | null;
+  emailVerified: boolean;
+  deposit: number;
+  loan: number;
   createPasswordResetToken(): string;
+  createVerificationCode(): Promise<string>;
 }
 
 const userSchema = new Schema<User>(
@@ -55,7 +60,21 @@ const userSchema = new Schema<User>(
     passwordResetExpires: {
       type: String,
     },
-    balance: {
+    verificationCode: {
+      type: String,
+    },
+    verificationCodeExpires: {
+      type: Date,
+    },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    deposit: {
+      type: Number,
+      default: 0,
+    },
+    loan: {
       type: Number,
       default: 0,
     },
@@ -83,6 +102,21 @@ userSchema.methods.createPasswordResetToken = function (): string {
   this.passwordResetToken = crypto.createHash('sha256').update(token).digest('hex');
 
   this.passwordResetExpires = new Date(Date.now() + 1 * 60 * 60 * 1000);
+
+  return token;
+};
+
+//generate a random 4 digit code to verify the user
+userSchema.methods.createVerificationCode = async function (): Promise<string> {
+  let token = '';
+  for (let i = 0; i < 4; i++) {
+    const rand = Math.random() * 10;
+    token += String(Math.floor(rand));
+  }
+
+  this.verificationCode = token;
+  this.verificationCodeExpires = new Date(Date.now() + 1 * 60 * 60 * 1000);
+  await this.save();
 
   return token;
 };

@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import AppError from '../../errors/AppError';
 import UserModel, { User } from '../../models/User';
 import successResponse from '../../middleware/response';
+import sendMail from '../../utils/sendMail';
 
 const signUp: RequestHandler = async (req, res, next) => {
   const { firstName, lastName, email, password, phoneNumber, passwordConfirm } = req.body;
@@ -22,6 +23,9 @@ const signUp: RequestHandler = async (req, res, next) => {
     phoneNumber,
     passwordConfirm,
   });
+
+  //send verification email
+  await sendMail();
 
   return successResponse(res, 201, 'Successfully created user', null);
 };

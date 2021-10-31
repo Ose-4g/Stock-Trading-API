@@ -8,9 +8,9 @@ interface Env {
   MONGO_URL_TEST: string;
   JWT_SECRET: string;
   JWT_EXPIRES: string;
-  ACCESS_KEY_ID: string;
-  SECRET_ACCESS_KEY: string;
-  BUCKET_NAME: string;
+  NODEMAILER_USER: string;
+  NODEMAILER_PASSWORD: string;
+  EMAIL_FROM: string;
 }
 
 export default {
@@ -20,7 +20,7 @@ export default {
   MONGO_URL_TEST: process.env.MONGO_URL_TEST,
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRES: process.env.JWT_EXPIRES,
-  ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
-  SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
-  BUCKET_NAME: process.env.BUCKET_NAME,
+  NODEMAILER_USER: process.env.NODEMAILER_USER,
+  NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
+  EMAIL_FROM: process.env.EMAIL_FROM,
 } as Env;

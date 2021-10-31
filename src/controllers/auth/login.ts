@@ -1,4 +1,3 @@
-process.env.NODE_ENV = 'test';
 import { RequestHandler } from 'express';
 import AppError from '../../errors/AppError';
 import UserModel, { User } from '../../models/User';
