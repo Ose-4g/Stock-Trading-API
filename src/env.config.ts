@@ -13,6 +13,8 @@ interface Env {
   EMAIL_FROM: string;
   JWT_COOKIE_EXPIRES_IN: string;
   CLIENT_URL: string;
+  PAYSTACK_SECRET_KEY: string;
+  PAYSTACK_PUBLIC_KEY: string;
 }
 
 export default {
@@ -27,4 +29,6 @@ export default {
   EMAIL_FROM: process.env.EMAIL_FROM,
   JWT_COOKIE_EXPIRES_IN: process.env.JWT_COOKIE_EXPIRES_IN,
   CLIENT_URL: process.env.CLIENT_URL,
+  PAYSTACK_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY,
+  PAYSTACK_PUBLIC_KEY: process.env.PAYSTACK_PUBLIC_KEY,
 } as Env;

@@ -1,8 +1,7 @@
 const constants = {
   mongooseModels: {
     USER: 'User',
-    IMAGE: 'Image',
-    IMAGE_TAG: 'ImageTag',
+    TRANSACTION: 'Transaction',
   },
   environments: {
     PRODUCTION: 'production',
@@ -18,9 +17,19 @@ const constants = {
       passwordConfirm: 'password',
     },
   },
-  permissions: {
-    PUBLIC: 'public',
-    PRIVATE: 'private',
+
+  transactionTypes: {
+    DEPOSIT: 'deposit',
+    WITHDRAWAL: 'withdrawal',
+    BUY: 'buy',
+    SELL: 'sell',
+  },
+
+  transactionStatus: {
+    INITIATED: 'initiated',
+    FAILURE: 'failure',
+    SUCCESS: 'success',
+    PENDING: 'pending',
   },
 };
 
