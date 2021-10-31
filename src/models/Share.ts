@@ -7,7 +7,7 @@ const { USER, SHARE } = constants.mongooseModels;
 export interface Share extends Document {
   user: PopulatedDoc<User>;
   symbol: string;
-  quantity: string;
+  quantity: number;
 }
 
 const shareSchema: Schema = new Schema(
