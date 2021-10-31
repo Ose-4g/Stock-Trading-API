@@ -4,6 +4,7 @@ import TransactionModel, { Transaction } from '../models/Transaction';
 import env from '../env.config';
 import { User } from '../models/User';
 import logger from './logger';
+import sendMail from './sendMail';
 
 const { PAYSTACK_SECRET_KEY } = env;
 
@@ -12,7 +13,7 @@ const generateReference = (): string => {
   return token;
 };
 
-const initializeTransaction = async (user: User, amount: number, type: string): Promise<Transaction> => {
+const initializeTransaction = async (user: User, amount: number, type: string) => {
   const reference = generateReference();
 
   try {
@@ -38,7 +39,19 @@ const initializeTransaction = async (user: User, amount: number, type: string): 
       reference,
       amount,
       type,
+      authorization_url,
     });
+
+    await sendMail({
+      to: user.email,
+      subject: 'Complete your payment',
+      html: `
+      Hi ${user.firstName},<br><br>
+      Please use the link below to complete you payment<br><br>
+      ${authorization_url}
+      `,
+    });
+
     return transaction;
   } catch (error: any) {
     logger.error('Error occured while initializing transaction');

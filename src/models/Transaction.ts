@@ -15,6 +15,7 @@ export interface Transaction extends Document {
   numberOfShares: number;
   pricePerShare: number;
   status: string;
+  authorization_url: string | null;
 }
 
 const transactionSchema: Schema = new Schema(
@@ -51,6 +52,9 @@ const transactionSchema: Schema = new Schema(
       required: ['true', 'Transaction status is required'],
       enum: [INITIATED, FAILURE, SUCCESS],
       default: INITIATED,
+    },
+    authorization_url: {
+      type: String,
     },
   },
   { timestamps: true }
