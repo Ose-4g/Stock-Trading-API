@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import AppError from '../../errors/AppError';
 import UserModel from '../../models/User';
+import successResponse from '../../middleware/response';
 
 const updateUserDetails: RequestHandler = async (req, res, next) => {
   const { firstName, lastName, phoneNumber } = req.body;
@@ -23,6 +24,13 @@ const updateUserDetails: RequestHandler = async (req, res, next) => {
     }
 
     await user.save();
+
+    return successResponse(res, 200, 'Successfully updated user details', {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+    });
   } catch (error) {
     next(error);
   }
