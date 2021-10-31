@@ -3,6 +3,9 @@ import AppError from '../../errors/AppError';
 import UserModel, { User } from '../../models/User';
 import successResponse from '../../middleware/response';
 import sendMail from '../../utils/sendMail';
+import env from '../../env.config';
+
+const { EMAIL_FROM } = env;
 
 const signUp: RequestHandler = async (req, res, next) => {
   const { firstName, lastName, email, password, phoneNumber, passwordConfirm } = req.body;
@@ -24,8 +27,17 @@ const signUp: RequestHandler = async (req, res, next) => {
     passwordConfirm,
   });
 
-  //send verification email
-  await sendMail();
+  //send welcome  email
+  await sendMail({
+    from: EMAIL_FROM,
+    to: user.email,
+    subject: 'Welcome to Trove',
+    html: `
+    Hi ${user.firstName},<br>
+    You've successfully signed up to the TroveTest app<br>
+    Login to get started in making valuable investments. 
+    `,
+  });
 
   return successResponse(res, 201, 'Successfully created user', null);
 };

@@ -3,7 +3,7 @@ dotenv.config();
 
 import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
-// import errorMiddleWare from './errors/errorHandler';
+import errorMiddleWare from './errors/errorHandler';
 import morgan from 'morgan';
 import router from './routes/index';
 
@@ -40,6 +40,6 @@ app.use('*', (req: Request, res: Response) => {
 });
 
 //error handling
-// app.use(errorMiddleWare);
+app.use(errorMiddleWare);
 
 export default app;

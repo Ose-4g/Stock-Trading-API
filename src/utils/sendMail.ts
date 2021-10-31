@@ -38,7 +38,6 @@ const sendMail = async ({
       subject,
       html,
     });
-    console.log(5);
   } catch (err) {
     logger.error('An error occured while ending email');
   }
