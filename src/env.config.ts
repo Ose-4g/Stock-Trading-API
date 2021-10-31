@@ -5,22 +5,30 @@ interface Env {
   PORT: string;
   NODE_ENV: string;
   MONGO_URL: string;
+  MONGO_URL_TEST: string;
   JWT_SECRET: string;
   JWT_EXPIRES: string;
-  ACCESS_KEY_ID: string;
-  SECRET_ACCESS_KEY: string;
-  BUCKET_NAME: string;
-  IMAAGI_KEY: string;
+  NODEMAILER_USER: string;
+  NODEMAILER_PASSWORD: string;
+  EMAIL_FROM: string;
+  JWT_COOKIE_EXPIRES_IN: string;
+  CLIENT_URL: string;
+  PAYSTACK_SECRET_KEY: string;
+  PAYSTACK_PUBLIC_KEY: string;
 }
 
 export default {
   PORT: process.env.PORT,
   NODE_ENV: process.env.NODE_ENV,
   MONGO_URL: process.env.MONGO_URL,
+  MONGO_URL_TEST: process.env.MONGO_URL_TEST,
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRES: process.env.JWT_EXPIRES,
-  ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
-  SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
-  BUCKET_NAME: process.env.BUCKET_NAME,
-  IMAAGI_KEY: process.env.IMAAGI_KEY,
+  NODEMAILER_USER: process.env.NODEMAILER_USER,
+  NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
+  EMAIL_FROM: process.env.EMAIL_FROM,
+  JWT_COOKIE_EXPIRES_IN: process.env.JWT_COOKIE_EXPIRES_IN,
+  CLIENT_URL: process.env.CLIENT_URL,
+  PAYSTACK_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY,
+  PAYSTACK_PUBLIC_KEY: process.env.PAYSTACK_PUBLIC_KEY,
 } as Env;
