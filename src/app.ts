@@ -27,7 +27,7 @@ app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {
   return res.status(200).json({
-    message: 'Welcome to My image repository',
+    message: 'Trove developer challenge by OSE4G',
     documentation: 'https://',
   });
 });
