@@ -39,7 +39,11 @@ const signUp: RequestHandler = async (req, res, next) => {
     `,
   });
 
-  return successResponse(res, 201, 'Successfully created user', null);
+  return successResponse(res, 201, 'Successfully created user', {
+    firstName,
+    lastName,
+    email,
+  });
 };
 
 export default signUp;
