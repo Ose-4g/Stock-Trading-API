@@ -26,6 +26,14 @@ const withdrawFunds: RequestHandler = async (req, res, next) => {
 
   try {
     const user: User | null = await UserModel.findById(req.user._id);
+
+    if (_amount > user!.deposit) {
+      return next(new AppError('Insufficient funds', 403));
+    }
+
+    if (!user!.recipientCode) {
+      return next(new AppError('No recepient code found. Please update account details', 404));
+    }
     await transferToReceipient(user!, _amount, WITHDRAWAL);
     return successResponse(res, 200, 'Money successfully transferred to your account', null);
   } catch (error) {

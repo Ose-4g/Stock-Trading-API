@@ -106,7 +106,7 @@ const transferToReceipient = async (user: User, amount: number, type: string) =>
       'https://api.paystack.co/transfer',
       {
         source: 'balance',
-        amount,
+        amount: amount * 100,
         recipient: user.recipientCode,
       },
       {
