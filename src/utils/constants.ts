@@ -26,6 +26,8 @@ const constants = {
     WITHDRAWAL: 'withdrawal',
     BUY: 'buy',
     SELL: 'sell',
+    LOAN: 'loan',
+    PAYBACK: 'payback',
   },
 
   transactionStatus: {

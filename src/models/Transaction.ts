@@ -3,7 +3,7 @@ import constants from '../utils/constants';
 import { User } from './User';
 
 const { USER, TRANSACTION } = constants.mongooseModels;
-const { DEPOSIT, WITHDRAWAL, BUY, SELL } = constants.transactionTypes;
+const { DEPOSIT, WITHDRAWAL, BUY, SELL, LOAN, PAYBACK } = constants.transactionTypes;
 const { INITIATED, FAILURE, SUCCESS } = constants.transactionStatus;
 
 export interface Transaction extends Document {
@@ -34,7 +34,7 @@ const transactionSchema: Schema = new Schema(
     },
     type: {
       type: String,
-      enum: [DEPOSIT, WITHDRAWAL, BUY, SELL],
+      enum: [DEPOSIT, WITHDRAWAL, BUY, SELL, LOAN, PAYBACK],
       required: [true, 'Transaction type is required'],
     },
     shares: {
