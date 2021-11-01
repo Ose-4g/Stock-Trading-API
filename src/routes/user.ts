@@ -6,6 +6,7 @@ import { requireSignIn } from '../middleware/auth';
 import updatePassword from '../controllers/user/updatePassword';
 import getPortFolioPosition from '../controllers/user/getPortfolioPosition';
 import getPortfolioValue from '../controllers/user/getPortfolioValue';
+import getUserLoanBalance from '../controllers/user/getUserLoan';
 
 const router: Router = Router();
 
@@ -13,5 +14,6 @@ router.patch('/update-profile', joiMiddleware(updateDetailsSchema), requireSignI
 router.put('/update-password', requireSignIn, updatePassword);
 router.get('/portfolio-position', requireSignIn, getPortFolioPosition);
 router.get('/portfolio-value', requireSignIn, getPortfolioValue);
+router.get('/loan-balance', requireSignIn, getUserLoanBalance);
 
 export default router;
