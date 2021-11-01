@@ -101,6 +101,18 @@ const generateReceipient = async (accountNumber: string, bankCode: string, user:
 
 const transferToReceipient = async (user: User, amount: number, type: string) => {
   try {
+    //generate reference
+    const reference = generateReference();
+
+    //create the transaction first
+
+    await TransactionModel.create({
+      user: user._id,
+      amount,
+      reference,
+      type,
+    });
+
     //initialize the transfer on paystack
     const { data } = await axios.post(
       'https://api.paystack.co/transfer',
@@ -108,6 +120,7 @@ const transferToReceipient = async (user: User, amount: number, type: string) =>
         source: 'balance',
         amount: amount * 100,
         recipient: user.recipientCode,
+        reference,
       },
       {
         headers: {
@@ -116,14 +129,7 @@ const transferToReceipient = async (user: User, amount: number, type: string) =>
         },
       }
     );
-    const { transfer_code, reference } = data.data;
-
-    await TransactionModel.create({
-      user: user._id,
-      amount,
-      reference,
-      type,
-    });
+    const { transfer_code } = data.data;
   } catch (error: any) {
     logger.error('Error occured while creating transfer receipient');
     if (error.response && error.response.data) {
