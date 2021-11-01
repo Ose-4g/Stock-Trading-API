@@ -5,9 +5,11 @@ import env from '../../env.config';
 import UserModel, { User } from '../../models/User';
 import logger from '../../utils/logger';
 import constants from '../../utils/constants';
+import LoanPaymentModel from '../../models/LoanPayment';
+import LoanModel from '../../models/Loan';
 
 const { SUCCESS } = constants.transactionStatus;
-const { DEPOSIT, WITHDRAWAL } = constants.transactionTypes;
+const { DEPOSIT, WITHDRAWAL, PAYBACK } = constants.transactionTypes;
 const { PAYSTACK_SECRET_KEY } = env;
 const CHARGE_SUCCESS = 'charge.success';
 
@@ -41,6 +43,25 @@ const handleEvent = async (event: string, body: any) => {
       user.deposit += amount / 100;
     } else if (type == WITHDRAWAL) {
       user.deposit -= amount / 100;
+    } else if (type == PAYBACK) {
+      logger.info('user paying back loan');
+      logger.info('updating the loan payment');
+      //update the loan payment
+      const loanPayment = await LoanPaymentModel.findById(transaction!.loanPayment);
+      loanPayment!.paid = true;
+      await loanPayment!.save();
+
+      logger.info('updating the loan');
+      //update the loan
+      const loan = await LoanModel.findById(loanPayment!.loan);
+      loan!.amountPaid += loanPayment!.amount;
+      loan!.paid = Math.ceil(loan!.amountPaid) == Math.ceil(loan!.amount);
+      await loan!.save();
+
+      logger.info('updating the user object');
+      //update the user object
+      user.loan -= loanPayment!.amount;
+      await user.save();
     }
 
     await user.save();

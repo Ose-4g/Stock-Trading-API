@@ -8,6 +8,9 @@ import constants from '../../utils/constants';
 import LoanModel from '../../models/Loan';
 import ShareModel from '../../models/Share';
 import { getPrice } from '../../data/companies';
+import TransactionModel from '../../models/Transaction';
+
+const { LOAN } = constants.transactionTypes;
 
 const takeLoan: RequestHandler = async (req, res, next) => {
   const { amount, duration } = req.body;
@@ -79,9 +82,18 @@ const takeLoan: RequestHandler = async (req, res, next) => {
 
     await user!.save();
 
+    // create a new Transaction.
+    await TransactionModel.create({
+      user: req.user._id,
+      amount: _amount,
+      type: LOAN,
+    });
+
     return successResponse(res, 201, 'Successfully took loan', loan);
   } catch (error) {
     logger.error('An error occured while taking loan');
     next(error);
   }
 };
+
+export default takeLoan;

@@ -10,6 +10,7 @@ export interface Loan extends Document {
   amount: number;
   paid: boolean;
   duration: number; // number of months
+  amountPaid: number;
 }
 
 const loanSchema: Schema<Loan> = new Schema<Loan>(
@@ -22,6 +23,10 @@ const loanSchema: Schema<Loan> = new Schema<Loan>(
     amount: {
       type: Number,
       required: [true, 'amount is required'],
+    },
+    amountPaid: {
+      type: Number,
+      default: 0,
     },
     paid: {
       type: Boolean,

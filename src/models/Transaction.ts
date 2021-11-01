@@ -1,8 +1,9 @@
 import { Schema, model, Model, Document, PopulatedDoc } from 'mongoose';
 import constants from '../utils/constants';
 import { User } from './User';
+import { LoanPayment } from './LoanPayment';
 
-const { USER, TRANSACTION } = constants.mongooseModels;
+const { USER, TRANSACTION, LOAN_PAYMENT } = constants.mongooseModels;
 const { DEPOSIT, WITHDRAWAL, BUY, SELL, LOAN, PAYBACK } = constants.transactionTypes;
 const { INITIATED, FAILURE, SUCCESS } = constants.transactionStatus;
 
@@ -16,6 +17,7 @@ export interface Transaction extends Document {
   pricePerShare: number;
   status: string;
   authorization_url: string | null;
+  loanPayment: PopulatedDoc<LoanPayment>;
 }
 
 const transactionSchema: Schema = new Schema(
@@ -54,6 +56,10 @@ const transactionSchema: Schema = new Schema(
     },
     authorization_url: {
       type: String,
+    },
+    loanPayment: {
+      type: Schema.Types.ObjectId,
+      ref: LOAN_PAYMENT,
     },
   },
   { timestamps: true }
