@@ -3,6 +3,8 @@ const constants = {
     USER: 'User',
     TRANSACTION: 'Transaction',
     SHARE: 'Share',
+    LOAN: 'Loan',
+    LOAN_PAYMENT: 'LoanPayment',
   },
   environments: {
     PRODUCTION: 'production',
