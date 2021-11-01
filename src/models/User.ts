@@ -20,6 +20,9 @@ export interface User extends Document {
   emailVerified: boolean;
   deposit: number;
   loan: number;
+  accountNumber: string;
+  bankCode: string;
+  recipientCode: string;
   createPasswordResetToken(): string;
   createVerificationCode(): Promise<string>;
 }
@@ -77,6 +80,15 @@ const userSchema = new Schema<User>(
     loan: {
       type: Number,
       default: 0,
+    },
+    accountNumber: {
+      type: String,
+    },
+    bankCode: {
+      type: String,
+    },
+    recipientCode: {
+      type: String,
     },
   },
   { timestamps: true }

@@ -5,12 +5,14 @@ import getLoanPaymentSchedule from '../controllers/finance/getLoanPaymentSchedul
 import payInstallMent from '../controllers/finance/payLoanInstallment';
 import takeLoan from '../controllers/finance/takeLoan';
 import webhook from '../controllers/finance/webhook';
+import withdrawFunds from '../controllers/finance/withdraw';
 import { requireSignIn } from '../middleware/auth';
 
 const router = Router();
 
 router.post('/webhook', webhook);
 router.post('/deposit', requireSignIn, deposit);
+router.post('/withdraw', requireSignIn, withdrawFunds);
 router.post('/buy-shares', requireSignIn, buyShare);
 router.post('/take-loan', requireSignIn, takeLoan);
 router.get('/payment-schedule', requireSignIn, getLoanPaymentSchedule);

@@ -12,6 +12,7 @@ const { SUCCESS } = constants.transactionStatus;
 const { DEPOSIT, WITHDRAWAL, PAYBACK } = constants.transactionTypes;
 const { PAYSTACK_SECRET_KEY } = env;
 const CHARGE_SUCCESS = 'charge.success';
+const TRANSFER_SUCCESS = 'transfer.success';
 
 const handleEvent = async (event: string, body: any) => {
   if (event == CHARGE_SUCCESS) {
@@ -62,6 +63,35 @@ const handleEvent = async (event: string, body: any) => {
       //update the user object
       user.loan -= loanPayment!.amount;
       await user.save();
+    }
+
+    await user.save();
+    await transaction.save();
+  } else if (event == TRANSFER_SUCCESS) {
+    const { data } = body;
+    const { reference, amount } = data;
+
+    logger.info('finding the transaction');
+    const transaction = await TransactionModel.findOne({ reference });
+
+    if (!transaction) {
+      logger.error(`Transaction with reference ${reference} not found`);
+      return;
+    }
+
+    transaction!.status = SUCCESS;
+    const type = transaction?.type;
+
+    logger.info('finding the user who made the transaction');
+    const user = await UserModel.findById(transaction!.user);
+
+    if (!user) {
+      logger.error(`User ${transaction!.user} not found`);
+      return;
+    }
+
+    if (type == WITHDRAWAL) {
+      user.deposit -= amount / 100;
     }
 
     await user.save();

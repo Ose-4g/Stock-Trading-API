@@ -26,10 +26,10 @@ const payInstallMent: RequestHandler = async (req, res, next) => {
   }
 
   try {
-    const loanPayment = await LoanPaymentModel.findById(loanPaymentId);
+    const loanPayment = await LoanPaymentModel.findOne({ _id: loanPaymentId, paid: false });
 
     if (!loanPayment) {
-      return next(new AppError('Loan payment item not found', 400));
+      return next(new AppError('Loan payment item not found', 404));
     }
 
     const user = await UserModel.findById(req.user._id);

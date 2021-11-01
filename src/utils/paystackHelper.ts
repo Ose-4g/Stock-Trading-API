@@ -2,7 +2,7 @@ import axios from 'axios';
 import crypto from 'crypto';
 import TransactionModel, { Transaction } from '../models/Transaction';
 import env from '../env.config';
-import { User } from '../models/User';
+import UserModel, { User } from '../models/User';
 import logger from './logger';
 import sendMail from './sendMail';
 
@@ -64,4 +64,76 @@ const initializeTransaction = async (user: User, amount: number, type: string, l
   }
 };
 
-export { initializeTransaction };
+const generateReceipient = async (accountNumber: string, bankCode: string, user: User): Promise<void> => {
+  try {
+    //Create the receipient on paystack
+    const { data } = await axios.post(
+      'https://api.paystack.co/transferrecipient',
+      {
+        type: 'nuban',
+        name: `${user.firstName} ${user.lastName}`,
+        account_number: accountNumber,
+        bank_code: bankCode,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const { recipient_code } = data.data;
+
+    user.recipientCode = recipient_code;
+    (user.accountNumber = accountNumber), (user.bankCode = bankCode);
+    await user.save();
+  } catch (error: any) {
+    logger.error('Error occured while creating transfer receipient');
+    if (error.response && error.response.data) {
+      logger.error(error.response.data);
+      throw Error(error.response.data);
+    } else {
+      logger.error(error);
+      throw Error(error);
+    }
+  }
+};
+
+const transferToReceipient = async (user: User, amount: number, type: string) => {
+  try {
+    //initialize the transfer on paystack
+    const { data } = await axios.post(
+      'https://api.paystack.co/transfer',
+      {
+        source: 'balance',
+        amount: amount * 100,
+        recipient: user.recipientCode,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const { transfer_code, reference } = data.data;
+
+    await TransactionModel.create({
+      user: user._id,
+      amount,
+      reference,
+      type,
+    });
+  } catch (error: any) {
+    logger.error('Error occured while creating transfer receipient');
+    if (error.response && error.response.data) {
+      logger.error(error.response.data);
+      throw Error(error.response.data);
+    } else {
+      logger.error(error);
+      throw Error(error);
+    }
+  }
+};
+
+export { initializeTransaction, generateReceipient, transferToReceipient };
