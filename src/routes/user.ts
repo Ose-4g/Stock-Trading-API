@@ -5,11 +5,13 @@ import { updateDetailsSchema } from '../validators/user';
 import { requireSignIn } from '../middleware/auth';
 import updatePassword from '../controllers/user/updatePassword';
 import getPortFolioPosition from '../controllers/user/getPortfolioPosition';
+import getPortfolioValue from '../controllers/user/getPortfolioValue';
 
 const router: Router = Router();
 
 router.patch('/update-profile', joiMiddleware(updateDetailsSchema), requireSignIn, updateUserDetails);
 router.put('/update-password', requireSignIn, updatePassword);
 router.get('/portfolio-position', requireSignIn, getPortFolioPosition);
+router.get('/portfolio-value', requireSignIn, getPortfolioValue);
 
 export default router;
