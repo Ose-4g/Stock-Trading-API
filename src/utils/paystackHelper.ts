@@ -13,7 +13,7 @@ const generateReference = (): string => {
   return token;
 };
 
-const initializeTransaction = async (user: User, amount: number, type: string) => {
+const initializeTransaction = async (user: User, amount: number, type: string, loanPaymentId: string | null = null) => {
   const reference = generateReference();
 
   try {
@@ -34,13 +34,17 @@ const initializeTransaction = async (user: User, amount: number, type: string) =
     );
     const { authorization_url } = data.data;
     //create a new transaction
-    const transaction = await TransactionModel.create({
+    const transaction = new TransactionModel({
       user: user._id,
       reference,
       amount,
       type,
       authorization_url,
     });
+
+    if (loanPaymentId) transaction.loanPayment = loanPaymentId;
+
+    await transaction.save();
 
     await sendMail({
       to: user.email,

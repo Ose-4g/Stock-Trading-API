@@ -3,6 +3,8 @@ const constants = {
     USER: 'User',
     TRANSACTION: 'Transaction',
     SHARE: 'Share',
+    LOAN: 'Loan',
+    LOAN_PAYMENT: 'LoanPayment',
   },
   environments: {
     PRODUCTION: 'production',
@@ -24,6 +26,8 @@ const constants = {
     WITHDRAWAL: 'withdrawal',
     BUY: 'buy',
     SELL: 'sell',
+    LOAN: 'loan',
+    PAYBACK: 'payback',
   },
 
   transactionStatus: {
