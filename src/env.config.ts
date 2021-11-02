@@ -10,6 +10,10 @@ interface Env {
   JWT_EXPIRES: string;
   NODEMAILER_USER: string;
   NODEMAILER_PASSWORD: string;
+  CLIENT_ID: string;
+  CLIENT_SECRET: string;
+  NODEMAILER_REFRESH_TOKEN: string;
+  REDIRECT_URI: string;
   EMAIL_FROM: string;
   JWT_COOKIE_EXPIRES_IN: string;
   CLIENT_URL: string;
@@ -26,6 +30,10 @@ export default {
   JWT_EXPIRES: process.env.JWT_EXPIRES,
   NODEMAILER_USER: process.env.NODEMAILER_USER,
   NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
+  CLIENT_ID: process.env.CLIENT_ID,
+  CLIENT_SECRET: process.env.CLIENT_SECRET,
+  NODEMAILER_REFRESH_TOKEN: process.env.NODEMAILER_REFRESH_TOKEN,
+  REDIRECT_URI: process.env.REDIRECT_URI,
   EMAIL_FROM: process.env.EMAIL_FROM,
   JWT_COOKIE_EXPIRES_IN: process.env.JWT_COOKIE_EXPIRES_IN,
   CLIENT_URL: process.env.CLIENT_URL,

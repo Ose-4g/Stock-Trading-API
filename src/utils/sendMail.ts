@@ -1,21 +1,43 @@
 import env from '../env.config';
 import nodemailer from 'nodemailer';
 import logger from './logger';
+import { google } from 'googleapis';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-const { NODEMAILER_USER, NODEMAILER_PASSWORD, EMAIL_FROM } = env;
+const {
+  NODEMAILER_USER,
+  NODEMAILER_PASSWORD,
+  EMAIL_FROM,
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI,
+  NODEMAILER_REFRESH_TOKEN,
+} = env;
+
+const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+oAuth2Client.setCredentials({
+  refresh_token: NODEMAILER_REFRESH_TOKEN,
+});
 
 const sendMail = async ({ to, subject, html }: { to: string; subject: string; html: string }): Promise<void> => {
   try {
+    //GET ACCESS TOKEN TO USE TO SEND MAIL
+    const { token } = await oAuth2Client.getAccessToken();
+
     //CREATE TRANSPORTER USING CORRECT CREDENTIALS
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
       secure: true,
       auth: {
+        type: 'OAuth2',
         user: NODEMAILER_USER,
-        pass: NODEMAILER_PASSWORD,
+        refreshToken: NODEMAILER_REFRESH_TOKEN,
+        accessToken: token,
+        clientId: CLIENT_ID,
+        clientSecret: CLIENT_SECRET,
       },
-    });
+    } as SMTPTransport.Options);
 
     //VERIFY THE TRANSPORTER
     await transporter.verify();
