@@ -7,6 +7,7 @@ import constants from '../../utils/constants';
 import TransactionModel from '../../models/Transaction';
 import ShareModel, { Share } from '../../models/Share';
 import successResponse from '../../middleware/response';
+import sendMail from '../../utils/sendMail';
 
 const { BUY } = constants.transactionTypes;
 const { INITIATED, SUCCESS } = constants.transactionStatus;
@@ -77,6 +78,14 @@ const buyShare: RequestHandler = async (req, res, next) => {
     //update the transaction
     transaction.status = SUCCESS;
     await transaction.save();
+
+    await sendMail({
+      to: user.email,
+      subject: 'Share Purchase Successful',
+      html: `
+      Hi ${user.firstName},<br><br>
+      Your purchase of ${quantity} units of ${symbol} shares was successful`,
+    });
 
     return successResponse(res, 201, 'Successfully bought shares', transaction);
   } catch (error) {

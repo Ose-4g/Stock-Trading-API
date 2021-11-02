@@ -1,18 +1,20 @@
 import axios from 'axios';
 import crypto from 'crypto';
-import TransactionModel, { Transaction } from '../models/Transaction';
+import TransactionModel from '../models/Transaction';
 import env from '../env.config';
-import UserModel, { User } from '../models/User';
+import { User } from '../models/User';
 import logger from './logger';
 import sendMail from './sendMail';
 
 const { PAYSTACK_SECRET_KEY } = env;
 
+// function to generate reference to be used in the various transactions
 const generateReference = (): string => {
   const token = crypto.randomBytes(16).toString('hex');
   return token;
 };
 
+// function to initialize transaction ans send authorization irl to user's email
 const initializeTransaction = async (user: User, amount: number, type: string, loanPaymentId: string | null = null) => {
   const reference = generateReference();
 
@@ -64,6 +66,7 @@ const initializeTransaction = async (user: User, amount: number, type: string, l
   }
 };
 
+// create a new receipient to send transfer to.
 const generateReceipient = async (accountNumber: string, bankCode: string, user: User): Promise<void> => {
   try {
     //Create the receipient on paystack
@@ -99,8 +102,21 @@ const generateReceipient = async (accountNumber: string, bankCode: string, user:
   }
 };
 
+// make transfer to the receipient
 const transferToReceipient = async (user: User, amount: number, type: string) => {
   try {
+    //generate reference
+    const reference = generateReference();
+
+    //create the transaction first
+
+    await TransactionModel.create({
+      user: user._id,
+      amount,
+      reference,
+      type,
+    });
+
     //initialize the transfer on paystack
     const { data } = await axios.post(
       'https://api.paystack.co/transfer',
@@ -108,6 +124,7 @@ const transferToReceipient = async (user: User, amount: number, type: string) =>
         source: 'balance',
         amount: amount * 100,
         recipient: user.recipientCode,
+        reference,
       },
       {
         headers: {
@@ -116,14 +133,7 @@ const transferToReceipient = async (user: User, amount: number, type: string) =>
         },
       }
     );
-    const { transfer_code, reference } = data.data;
-
-    await TransactionModel.create({
-      user: user._id,
-      amount,
-      reference,
-      type,
-    });
+    const { transfer_code } = data.data;
   } catch (error: any) {
     logger.error('Error occured while creating transfer receipient');
     if (error.response && error.response.data) {

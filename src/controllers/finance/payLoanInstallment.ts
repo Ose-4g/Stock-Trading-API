@@ -5,10 +5,6 @@ import logger from '../../utils/logger';
 import { initializeTransaction } from '../../utils/paystackHelper';
 import successResponse from '../../middleware/response';
 import constants from '../../utils/constants';
-import { Transaction } from '../../models/Transaction';
-import LoanModel from '../../models/Loan';
-import ShareModel from '../../models/Share';
-import { getPrice } from '../../data/companies';
 import LoanPaymentModel from '../../models/LoanPayment';
 import validator from 'validator';
 
@@ -17,6 +13,7 @@ const { PAYBACK } = constants.transactionTypes;
 const payInstallMent: RequestHandler = async (req, res, next) => {
   const { loanPaymentId } = req.params;
 
+  //checking the id is valid
   if (!loanPaymentId) {
     return next(new AppError('loan payment id is required', 400));
   }
@@ -26,6 +23,7 @@ const payInstallMent: RequestHandler = async (req, res, next) => {
   }
 
   try {
+    // get the loan payment
     const loanPayment = await LoanPaymentModel.findOne({ _id: loanPaymentId, paid: false });
 
     if (!loanPayment) {
@@ -33,6 +31,7 @@ const payInstallMent: RequestHandler = async (req, res, next) => {
     }
 
     const user = await UserModel.findById(req.user._id);
+
     // initialize payment for the loan payment
     const transaction = await initializeTransaction(user!, loanPayment.amount, PAYBACK, loanPaymentId);
 

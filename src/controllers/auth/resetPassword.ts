@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import AppError from '../../errors/AppError';
 import logger from '../../utils/logger';
-import UserModel, { User } from '../../models/User';
+import UserModel from '../../models/User';
 import crypto from 'crypto';
 import successResponse from '../../middleware/response';
 
@@ -25,9 +25,12 @@ const resetPassword: RequestHandler = async (req, res, next) => {
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
     const user = await UserModel.findOne({ passwordResetToken: hashedToken });
 
+    // check that the rest token has not expired
     if (!user || (user.passwordResetExpires as Date).getTime() < Date.now()) {
       return next(new AppError('Invalid or expired token', 400));
     }
+
+    //update the password
     user.passwordResetToken = null;
     user.passwordResetExpires = null;
 

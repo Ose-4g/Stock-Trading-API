@@ -1,13 +1,8 @@
 import { RequestHandler } from 'express';
 import AppError from '../../errors/AppError';
-import UserModel from '../../models/User';
 import logger from '../../utils/logger';
-import { initializeTransaction } from '../../utils/paystackHelper';
 import successResponse from '../../middleware/response';
-import constants from '../../utils/constants';
 import LoanModel from '../../models/Loan';
-import ShareModel from '../../models/Share';
-import { getPrice } from '../../data/companies';
 import LoanPaymentModel from '../../models/LoanPayment';
 
 const getLoanPaymentSchedule: RequestHandler = async (req, res, next) => {

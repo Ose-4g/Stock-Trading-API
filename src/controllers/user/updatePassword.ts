@@ -9,12 +9,14 @@ const updatePassword: RequestHandler = async (req, res, next) => {
   const { currentPassword, newPassword, newPasswordConfirm } = req.body;
 
   try {
+    //get the logged in user
     const user = await UserModel.findById(req.user._id).select('+password');
 
     if (!user) {
       return next(new AppError('User not found', 404));
     }
 
+    //check if passwords match
     const passwordMatch = await bcrypt.compare(currentPassword, user.password);
     if (!passwordMatch) {
       return next(new AppError('incorrect  password provided', 400));
@@ -24,6 +26,7 @@ const updatePassword: RequestHandler = async (req, res, next) => {
       return next(new AppError('new password doesnt match with confirm password', 400));
     }
 
+    //update the user password
     user.password = newPassword;
     user.passwordConfirm = newPasswordConfirm;
 

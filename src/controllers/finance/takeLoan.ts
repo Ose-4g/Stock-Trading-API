@@ -2,7 +2,6 @@ import { RequestHandler } from 'express';
 import AppError from '../../errors/AppError';
 import UserModel from '../../models/User';
 import logger from '../../utils/logger';
-import { initializeTransaction } from '../../utils/paystackHelper';
 import successResponse from '../../middleware/response';
 import constants from '../../utils/constants';
 import LoanModel from '../../models/Loan';
@@ -42,7 +41,7 @@ const takeLoan: RequestHandler = async (req, res, next) => {
   }
 
   try {
-    // check that user is not currently owning any loan
+    // check that user is not currently owing any loan
     const unpaidLoans = await LoanModel.find({ paid: false });
 
     if (unpaidLoans.length > 0) {

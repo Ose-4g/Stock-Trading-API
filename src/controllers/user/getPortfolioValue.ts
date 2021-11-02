@@ -10,6 +10,8 @@ const getPortfolioValue: RequestHandler = async (req, res, next) => {
     const user = await UserModel.findById(req.user._id);
     const allShares = await ShareModel.find({ user: req.user._id });
     let value = 0;
+
+    // gets the sum of values from all the shares the user owns
     for (const share of allShares) {
       const pricePerShare = getPrice(share.symbol);
       value += pricePerShare * share.quantity;

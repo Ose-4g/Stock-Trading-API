@@ -1,4 +1,5 @@
-import AppError from '../errors/AppError';
+// in an actual app, this data will come from an api
+// this is just to represent that.
 
 interface Company {
   symbol: string;

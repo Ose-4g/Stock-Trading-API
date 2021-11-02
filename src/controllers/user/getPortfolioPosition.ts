@@ -9,6 +9,7 @@ const getPortFolioPosition: RequestHandler = async (req, res, next) => {
     const allShares = await ShareModel.find({ user: req.user._id });
     const data = [];
     for (const share of allShares) {
+      // get the value of each of the shares the user owns.
       const pricePerShare = getPrice(share.symbol);
       const shareCopy = {
         symbol: share.symbol,
