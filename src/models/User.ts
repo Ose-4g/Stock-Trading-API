@@ -89,6 +89,7 @@ const userSchema = new Schema<User>(
     },
     recipientCode: {
       type: String,
+      select: false,
     },
   },
   { timestamps: true }

@@ -8,9 +8,11 @@ import getPortFolioPosition from '../controllers/user/getPortfolioPosition';
 import getPortfolioValue from '../controllers/user/getPortfolioValue';
 import getUserLoanBalance from '../controllers/user/getUserLoan';
 import updateAccountDetails from '../controllers/user/updateAccountDetails';
+import getUserInfo from '../controllers/user/getUserInfo';
 
 const router: Router = Router();
 
+router.get('/', requireSignIn, getUserInfo);
 router.patch('/update-profile', joiMiddleware(updateDetailsSchema), requireSignIn, updateUserDetails);
 router.put('/update-password', requireSignIn, updatePassword);
 router.get('/portfolio-position', requireSignIn, getPortFolioPosition);
