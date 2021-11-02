@@ -24,7 +24,7 @@ $ npm install
 - To run locally you'll need 
   - URI to a mongoDB server running locally or in the cloud
   - URI to another mongoDB database for testing.
-  - Client keys ans secret for nodemailer with gmail
+  - Client keys and secret for nodemailer with gmail
 - To run locally after setting the environment variables correctly.
   - To run in development mode
   ```bash
