@@ -30,7 +30,7 @@ app.use('/api/v1', router);
 app.get('/', (req: Request, res: Response) => {
   return res.status(200).json({
     message: 'Trove developer challenge by OSE4G',
-    documentation: 'https://',
+    documentation: 'https://documenter.getpostman.com/view/15666544/UVBzmpG7',
   });
 });
 
