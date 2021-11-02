@@ -6,12 +6,14 @@ import cookieParser from 'cookie-parser';
 import errorMiddleWare from './errors/errorHandler';
 import morgan from 'morgan';
 import router from './routes/index';
+import cors from 'cors';
 
 // import router
 
 //add middlewares
 const app = express();
 
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
