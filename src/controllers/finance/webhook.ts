@@ -1,12 +1,13 @@
 import { RequestHandler } from 'express';
 import crypto from 'crypto';
-import TransactionModel, { Transaction } from '../../models/Transaction';
+import TransactionModel from '../../models/Transaction';
 import env from '../../env.config';
-import UserModel, { User } from '../../models/User';
+import UserModel from '../../models/User';
 import logger from '../../utils/logger';
 import constants from '../../utils/constants';
 import LoanPaymentModel from '../../models/LoanPayment';
 import LoanModel from '../../models/Loan';
+import sendMail from '../../utils/sendMail';
 
 const { SUCCESS } = constants.transactionStatus;
 const { DEPOSIT, WITHDRAWAL, PAYBACK } = constants.transactionTypes;
@@ -39,11 +40,17 @@ const handleEvent = async (event: string, body: any) => {
       return;
     }
 
-    logger.info("updating the user'rs account accordingly");
+    logger.info("updating the user's account accordingly");
     if (type == DEPOSIT) {
       user.deposit += amount / 100;
-    } else if (type == WITHDRAWAL) {
-      user.deposit -= amount / 100;
+
+      await sendMail({
+        to: user.email,
+        subject: 'Deposit Successful',
+        html: `
+        Hi, ${user.firstName},<br><br>
+        Your deposit of ${transaction.amount} into your TroveTest account was successful`,
+      });
     } else if (type == PAYBACK) {
       logger.info('user paying back loan');
       logger.info('updating the loan payment');
@@ -63,6 +70,14 @@ const handleEvent = async (event: string, body: any) => {
       //update the user object
       user.loan -= loanPayment!.amount;
       await user.save();
+
+      await sendMail({
+        to: user.email,
+        subject: 'Loan payment Successful',
+        html: `
+        Hi, ${user.firstName},<br><br>
+        Your loan payment of ${transaction.amount}  was successful`,
+      });
     }
 
     await user.save();
@@ -92,6 +107,14 @@ const handleEvent = async (event: string, body: any) => {
 
     if (type == WITHDRAWAL) {
       user.deposit -= amount / 100;
+
+      await sendMail({
+        to: user.email,
+        subject: 'Withdrawal Successful',
+        html: `
+        Hi, ${user.firstName},<br><br>
+        Your withdrawal of ${transaction.amount} from your TroveTest account was successful and was made to your account. `,
+      });
     }
 
     await user.save();

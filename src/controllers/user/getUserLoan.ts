@@ -1,9 +1,6 @@
 import { RequestHandler } from 'express';
-import ShareModel from '../../models/Share';
 import successResponse from '../../middleware/response';
-import { getPrice } from '../../data/companies';
 import logger from '../../utils/logger';
-import UserModel from '../../models/User';
 import LoanModel from '../../models/Loan';
 import AppError from '../../errors/AppError';
 
