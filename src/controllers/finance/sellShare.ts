@@ -23,7 +23,7 @@ const sellShare: RequestHandler = async (req, res, next) => {
     return next(new AppError('quantity is required', 400));
   }
 
-  const _quantity = parseInt(quantity);
+  const _quantity = parseFloat(quantity);
 
   if (!_quantity || isNaN(_quantity)) {
     return next(new AppError('invalid value for quantity', 400));

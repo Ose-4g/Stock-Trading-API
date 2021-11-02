@@ -15,7 +15,7 @@ const withdrawFunds: RequestHandler = async (req, res, next) => {
     return next(new AppError('amount is required', 400));
   }
 
-  const _amount = parseInt(amount);
+  const _amount = parseFloat(amount);
 
   if (!_amount || isNaN(_amount)) {
     return next(new AppError('invalid value for amount', 400));
