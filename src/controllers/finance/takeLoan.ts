@@ -43,7 +43,7 @@ const takeLoan: RequestHandler = async (req, res, next) => {
 
   try {
     // check that user is not currently owing any loan
-    const unpaidLoans = await LoanModel.find({ paid: false });
+    const unpaidLoans = await LoanModel.find({ paid: false, user: req.user._id });
 
     if (unpaidLoans.length > 0) {
       return next(new AppError('You are ineligible to take a new loan till the former is paid', 403));
