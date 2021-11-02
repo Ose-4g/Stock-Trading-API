@@ -71,7 +71,7 @@ const sellShare: RequestHandler = async (req, res, next) => {
 
     await sendMail({
       to: user.email,
-      subject: 'Share Purchase Successful',
+      subject: 'Share Sale Successful',
       html: `
       Hi ${user.firstName},<br><br>
       Your salee of ${quantity} units of ${symbol} shares was successful and your account had been updated  accordingly`,

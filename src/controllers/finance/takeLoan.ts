@@ -8,6 +8,7 @@ import LoanModel from '../../models/Loan';
 import ShareModel from '../../models/Share';
 import { getPrice } from '../../data/companies';
 import TransactionModel from '../../models/Transaction';
+import sendMail from '../../utils/sendMail';
 
 const { LOAN } = constants.transactionTypes;
 
@@ -86,6 +87,16 @@ const takeLoan: RequestHandler = async (req, res, next) => {
       user: req.user._id,
       amount: _amount,
       type: LOAN,
+    });
+
+    await sendMail({
+      to: user!.email,
+      subject: 'Loan Request Granted',
+      html: `
+      Hi ${user!.firstName},<br><br>
+      Your request to take a loan of ${_amount} has been granted.<br>
+      The loan will be paid back installmentally every month for the next ${_duration} months<br>
+      Log into your account to see the breakdown.`,
     });
 
     return successResponse(res, 201, 'Successfully took loan', loan);
