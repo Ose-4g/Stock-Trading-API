@@ -1,4 +1,4 @@
-# Trove-Developer-Challenge
+# Stock-Trading-API
 An app for users to make valuable investments in stocks and shares.
 It also gives users opportunity to take loans and payback installmentally over a given period
 
@@ -16,8 +16,8 @@ To use the api look through the <a href="https://documenter.getpostman.com/view/
 ### Running Locally
 - Clone the repository. Run the following  in your terminal
 ```bash
-$ git clone https://github.com/Ose-4g/Trove-Developer-Challenge.git
-$ cd Trove-Developer-Challenge
+$ git clone https://github.com/Ose-4g/Stock-Trading-API.git
+$ cd Stock-Trading-API
 $ npm install
 ```
 - In the root directory of the project create a **.env** file and copy the values from **.env.sample** and set the values of the veriables correctly.
